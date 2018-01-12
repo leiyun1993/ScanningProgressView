@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScanningProgressView">
+        <attr name="spv_background_color" format="color" />
+        <attr name="spv_dark_color" format="color" />
+        <attr name="spv_light_color" format="color" />
+        <attr name="spv_circle_stroke_width" format="dimension" />
+    </declare-styleable>
+</resources>
