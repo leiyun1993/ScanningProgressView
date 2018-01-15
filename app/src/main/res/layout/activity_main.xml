@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context="com.yunlei.scanningprogressview.MainActivity">
@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        app:spv_background_color="@android:color/holo_red_light"
-        app:spv_dark_color="@android:color/holo_blue_dark"
-        app:spv_light_color="@android:color/holo_orange_light"
-        app:spv_circle_stroke_width="2dp"/>
+        app:spv_background_color="@color/backgroundColor"
+        app:spv_circle_stroke_width="2dp"
+        app:spv_dark_color="@color/darkColor"
+        app:spv_light_color="@color/lightColor" />
 
     <Button
         android:id="@+id/btnClick"

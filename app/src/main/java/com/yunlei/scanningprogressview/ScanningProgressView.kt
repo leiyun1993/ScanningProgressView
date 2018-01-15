@@ -3,14 +3,13 @@ package com.yunlei.scanningprogressview
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.os.Handler
-import android.os.Message
 import android.util.AttributeSet
 import android.view.View
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
-import java.lang.ref.WeakReference
+import java.util.*
+import kotlin.concurrent.timerTask
 
 
 /**
@@ -26,9 +25,9 @@ class ScanningProgressView : View, AnkoLogger {
 
     //背景色
     private var mBackgroundColor: Int = Color.parseColor("#ffffff")
-    /* 亮色，用于分针、秒针、渐变终止色 */
+    /* 亮色 */
     private var mLightColor: Int = Color.parseColor("#237EAD")
-    /* 暗色，圆弧、刻度线、时针、渐变起始色 */
+    /* 暗色 */
     private var mDarkColor: Int = Color.parseColor("#f5f5f5")
     //画布
     private lateinit var mCanvas: Canvas
@@ -46,15 +45,15 @@ class ScanningProgressView : View, AnkoLogger {
     private val mTextRect: Rect = Rect()
     /* 外径圆圈线条宽度 */
     private var mCircleStrokeWidth = 2f
-    /* 指针的在x轴的位移 */
+    /* x轴的位移 */
     private val mCanvasTranslateX: Float = 0.toFloat()
-    /* 指针的在y轴的位移 */
+    /* y轴的位移 */
     private val mCanvasTranslateY: Float = 0.toFloat()
     /* 刻度线长度 */
     private var mScaleLength: Float = 0.toFloat()
     /* 时钟半径，不包括padding值 */
     private var mRadius: Float = 0.toFloat()
-    /* 加一个默认的padding值，为了防止用camera旋转时钟时造成四周超出view大小 */
+    /* 加一个默认的padding值 */
     private var mDefaultPadding: Float = 0.toFloat()
     private var mPaddingLeft: Float = 0.toFloat()
     private var mPaddingTop: Float = 0.toFloat()
@@ -68,8 +67,10 @@ class ScanningProgressView : View, AnkoLogger {
     private var mDegree: Float = 0f
     private var mMaxCanvasTranslate: Float = 0.toFloat()
     /* 刷新控件显示 */
-    private val mHandler = MyHandler(this)
     private var mCurrDrawScore: Int = 0
+    /* 刷新显示计时器 */
+    private var timer: Timer? = null
+
     var mLabel: String = "%"
         set(value) {
             field = value
@@ -173,6 +174,7 @@ class ScanningProgressView : View, AnkoLogger {
         drawScaleLine()
         drawText()
         drawScore()
+        invalidate()
     }
 
     /**
@@ -268,9 +270,10 @@ class ScanningProgressView : View, AnkoLogger {
      */
     fun startScanning() {
         mDegree += 2f
-        mHandler.removeMessages(0)
-        mHandler.sendEmptyMessageDelayed(0, 1)
-        invalidate()
+        if (timer == null) {
+            timer = Timer()
+            timer?.schedule(timerTask { startScanning() }, 0, 5)
+        }
         if (mDegree >= 360f) {
             mDegree = 1f
         }
@@ -280,20 +283,7 @@ class ScanningProgressView : View, AnkoLogger {
      * 停止扫描
      */
     fun stopScanning() {
-        mHandler.removeMessages(0)
-        invalidate()
-    }
-
-    class MyHandler(view: ScanningProgressView) : Handler() {
-        private val mView = WeakReference<ScanningProgressView>(view)
-
-        override fun handleMessage(msg: Message?) {
-            super.handleMessage(msg)
-            if (msg?.what == 0) {
-                mView.get()?.startScanning()
-            } else if (msg?.what == 1) {
-                mView.get()?.addScore()
-            }
-        }
+        timer?.cancel()
+        timer = null
     }
 }
