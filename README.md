@@ -3,5 +3,5 @@
 
 ### 直接上图
 
-![image](../screenshot/1.gif)
+![image](https://github.com/leiyun1993/ScanningProgressView/raw/master/screenshot/1.gif)
 
