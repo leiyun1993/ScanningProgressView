@@ -5,5 +5,9 @@
         <attr name="spv_dark_color" format="color" />
         <attr name="spv_light_color" format="color" />
         <attr name="spv_circle_stroke_width" format="dimension" />
+        <attr name="spv_base_text_size" format="dimension" />
+        <attr name="spv_base_text_color" format="color" />
+        <attr name="spv_label_text_size" format="dimension" />
+        <attr name="spv_label_text_color" format="color" />
     </declare-styleable>
 </resources>

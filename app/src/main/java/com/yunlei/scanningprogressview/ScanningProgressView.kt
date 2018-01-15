@@ -70,6 +70,14 @@ class ScanningProgressView : View, AnkoLogger {
     private var mCurrDrawScore: Int = 0
     /* 刷新显示计时器 */
     private var timer: Timer? = null
+    /* 基础文字大小 */
+    private var mBaseTextSize = sp(50)
+    /* 基础文字颜色 */
+    private var mBaseTextColor = Color.parseColor("#333333")
+    /* label文字大小 */
+    private var mLabelTextSize = sp(14)
+    /* label文字颜色 */
+    private var mLabelTextColor = Color.parseColor("#666666")
 
     var mLabel: String = "%"
         set(value) {
@@ -109,6 +117,10 @@ class ScanningProgressView : View, AnkoLogger {
         mDarkColor = a.getColor(R.styleable.ScanningProgressView_spv_dark_color, mDarkColor)
         mLightColor = a.getColor(R.styleable.ScanningProgressView_spv_light_color, mLightColor)
         mCircleStrokeWidth = a.getDimensionPixelSize(R.styleable.ScanningProgressView_spv_circle_stroke_width, mCircleStrokeWidth.toInt()).toFloat()
+        mBaseTextSize = a.getDimensionPixelSize(R.styleable.ScanningProgressView_spv_base_text_size, mBaseTextSize)
+        mLabelTextSize = a.getDimensionPixelSize(R.styleable.ScanningProgressView_spv_base_text_size, mLabelTextSize)
+        mBaseTextColor = a.getColor(R.styleable.ScanningProgressView_spv_base_text_color,mBaseTextColor)
+        mLabelTextColor = a.getColor(R.styleable.ScanningProgressView_spv_base_text_color,mLabelTextColor)
         a.recycle()
 
         mBGCirclePaint.style = Paint.Style.STROKE
@@ -249,9 +261,9 @@ class ScanningProgressView : View, AnkoLogger {
      * 绘制文字
      */
     private fun drawText() {
-        mTextPaint.color = Color.parseColor("#333333")
+        mTextPaint.color = mBaseTextColor
         mTextPaint.style = Paint.Style.FILL
-        mTextPaint.textSize = sp(50).toFloat()
+        mTextPaint.textSize = mBaseTextSize.toFloat()
         val s = if (mScore > 0) {
             mScore.toString()
         } else {
@@ -259,9 +271,9 @@ class ScanningProgressView : View, AnkoLogger {
         }
         mTextPaint.getTextBounds(s, 0, s.length, mTextRect)
         mCanvas.drawText(s, (width / 2).toFloat() - mTextRect.width() / 2, (height / 2).toFloat() + mTextRect.height() / 2, mTextPaint)
-        mTextPaint.color = Color.parseColor("#666666")
+        mTextPaint.color = mLabelTextColor
         mTextPaint.style = Paint.Style.FILL
-        mTextPaint.textSize = sp(14).toFloat()
+        mTextPaint.textSize = mLabelTextSize.toFloat()
         mCanvas.drawText(mLabel, (width / 2).toFloat() + mTextRect.width() / 2 + dip(5), (height / 2).toFloat() + mTextRect.height() / 2, mTextPaint)
     }
 
